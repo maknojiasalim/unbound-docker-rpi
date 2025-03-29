@@ -28,7 +28,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker buildx build --platform linux/arm64 -t ghcr.io/${{ github.actor }}/unbound-cust:1.22.0 --push .
+          docker buildx build --platform linux/arm64 -t ghcr.io/${{ github.actor }}/unbound-cust:1.22.0 --push ./1.22.0
 
       # Login to GitHub Container Registry (GHCR)
       - name: Login to GHCR
