@@ -1,12 +1,11 @@
 name: Docker Build
 
 on:
-  push:
+  workflow_dispatch:
     branches:
       - main # Adjust to the branch you want to trigger the build on
     paths:
-      - '1.22.0/**' # Specify the directory or version you want to build from (like 1.10.1)
-
+      - '1.22.0/**' # Specify the directory or version you want to build from (like 1.22.0)
 jobs:
   build:
     runs-on: ubuntu-latest
