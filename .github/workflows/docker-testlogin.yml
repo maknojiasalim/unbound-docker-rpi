@@ -27,5 +27,5 @@ jobs:
       # Verify the login by pulling a test image (you can use a public image like alpine)
       - name: Test pulling a public image from GHCR
         run: |
-          docker pull ghcr.io/alpine:latest
+          docker pull ghcr.io/linuxcontainers/alpine:3.20
           echo "Successfully logged in to GHCR and pulled the image"
