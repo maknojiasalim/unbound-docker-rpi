@@ -1,11 +1,11 @@
-name: Docker Build
+name: Docker Build and Push to GHCR
 
 on:
   workflow_dispatch:
     branches:
-      - main # Adjust to the branch you want to trigger the build on
+      - main
     paths:
-      - '1.22.0/**' # Specify the directory or version you want to build from (like 1.22.0)
+      - '1.22.0/**'
 
 jobs:
   build:
@@ -21,28 +21,28 @@ jobs:
       - name: Cache Docker layers
         uses: actions/cache@v3
         with:
-            path: ~/.cache
-            key: ${{ runner.os }}-build-${{ hashFiles('**/Dockerfile') }}
-            restore-keys: |
-              ${{ runner.os }}-build-
+          path: ~/.cache
+          key: ${{ runner.os }}-build-${{ hashFiles('**/Dockerfile') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
 
       - name: Build Docker image
         run: |
-          docker build -t unbound-cust:1.22.0 ./1.22.0 # Adjust to the directory where the Dockerfile is located
+          docker build -t unbound-cust:1.22.0 ./1.22.0
 
-      # Add GHCR login step
-      - name: Login to GitHub Container Registry
+      # Login to GitHub Container Registry (GHCR)
+      - name: Login to GHCR
         uses: docker/login-action@v2
         with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN }}  # The secret token you've set in GitHub Secrets
+          username: ${{ github.actor }}               # GitHub username
+          password: ${{ secrets.GHCR_TOKEN }}         # GHCR token stored in secrets
 
-      # Tag the image with the GHCR repository name
-      - name: Tag Docker image
+      # Tag Docker image for GHCR
+      - name: Tag Docker image for GHCR
         run: |
           docker tag unbound-cust:1.22.0 ghcr.io/${{ github.repository_owner }}/unbound-cust:1.22.0
 
-      # Push the Docker image to GHCR
+      # Push the image to GHCR
       - name: Push Docker image to GHCR
         run: |
           docker push ghcr.io/${{ github.repository_owner }}/unbound-cust:1.22.0
