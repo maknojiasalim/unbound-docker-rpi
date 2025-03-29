@@ -18,6 +18,13 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
+      - name: Login to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
       - name: Cache Docker layers
         uses: actions/cache@v3
         with:
@@ -26,25 +33,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-
 
-      - name: Build Docker image
+      - name: Build and push Docker image
         run: |
           docker buildx build --platform linux/arm64 -t ghcr.io/${{ github.actor }}/unbound-cust:1.22.0 --push ./1.22.0
-
-      # Login to GitHub Container Registry (GHCR)
-      - name: Login to GHCR
-        uses: docker/login-action@v2
-        with:
-          username: ${{ github.actor }}               # GitHub username
-          password: ${{ secrets.GHCR_TOKEN }}         # GHCR token stored in secrets
-          registry: ghcr.io                      # Specify the GHCR registry
-
-
-      # Tag Docker image for GHCR
-      - name: Tag Docker image for GHCR
-        run: |
-          docker tag unbound-cust:1.22.0 ghcr.io/${{ github.repository_owner }}/unbound-cust:1.22.0
-
-      # Push the image to GHCR
-      - name: Push Docker image to GHCR
-        run: |
-          docker push ghcr.io/${{ github.repository_owner }}/unbound-cust:1.22.0
