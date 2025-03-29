@@ -1,0 +1,25 @@
+name: Test GHCR Login
+
+on:
+  workflow_dispatch:  # Triggered manually via the GitHub UI
+
+jobs:
+  test-login:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Test login to GitHub Container Registry (GHCR)
+      - name: Login to GHCR
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.actor }}  # Your GitHub username (from secrets)
+          password: ${{ secrets.GHCR_TOKEN }}     # Your GHCR token (from secrets)
+
+      # Verify the login by pulling a test image (you can use a public image like alpine)
+      - name: Test pulling a public image from GHCR
+        run: |
+          docker pull ghcr.io/alpine:latest
+          echo "Successfully logged in to GHCR and pulled the image"
