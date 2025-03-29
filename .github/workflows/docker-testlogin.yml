@@ -21,6 +21,8 @@ jobs:
         with:
           username: ${{ github.actor }}  # Your GitHub username (from secrets)
           password: ${{ secrets.GHCR_TOKEN }}     # Your GHCR token (from secrets)
+          registry: ghcr.io                      # Specify the GHCR registry
+
 
       # Verify the login by pulling a test image (you can use a public image like alpine)
       - name: Test pulling a public image from GHCR
