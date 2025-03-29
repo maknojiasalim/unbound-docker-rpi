@@ -36,6 +36,8 @@ jobs:
         with:
           username: ${{ github.actor }}               # GitHub username
           password: ${{ secrets.GHCR_TOKEN }}         # GHCR token stored in secrets
+          registry: ghcr.io                      # Specify the GHCR registry
+
 
       # Tag Docker image for GHCR
       - name: Tag Docker image for GHCR
