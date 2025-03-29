@@ -15,7 +15,7 @@ jobs:
       - name: Login to GHCR
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.actor }}  # Your GitHub username (from secrets)
+          username: ${{ github.actor }}  # Your GitHub username (from secrets)
           password: ${{ secrets.GHCR_TOKEN }}     # Your GHCR token (from secrets)
 
       # Verify the login by pulling a test image (you can use a public image like alpine)
