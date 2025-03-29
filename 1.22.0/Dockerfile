@@ -158,8 +158,9 @@ RUN echo "Running initial setup..." && \
     # Update and install dnsutils logrotate
     apt-get update -y && apt-get install -y dnsutils logrotate && apt-get clean && \
     echo "Configuring log rotation" && \
+    
     # Configure log rotation for unbound
-RUN cat << 'EOF' > /etc/logrotate.d/unbound
+RUN /bin/bash -c "cat << 'EOF' > /etc/logrotate.d/unbound
     /opt/unbound/etc/unbound/unbound.log {
         daily
         rotate 7
@@ -168,7 +169,8 @@ RUN cat << 'EOF' > /etc/logrotate.d/unbound
         missingok
         notifempty
     }
-    EOF
+    EOF"
+
     # Configuring crontab to run logrotate daily at midnight
     echo "0 0 * * * /usr/sbin/logrotate /etc/logrotate.d/unbound" | crontab - && \
     echo "Initial setup completed."
