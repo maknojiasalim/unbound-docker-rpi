@@ -1,4 +1,4 @@
-# Stage 1: Build OpenSSL
+# Stage 1: Build OpenSSL.
 FROM debian:bullseye as openssl
 
 ENV VERSION_OPENSSL=openssl-3.4.0 \
